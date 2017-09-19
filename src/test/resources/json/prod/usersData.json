@@ -1,0 +1,48 @@
+[{
+	"Administrador": [{
+		"userName": "1",
+		"password": "1"
+	}]
+}, {
+	"Facultativo": [{
+		"userName": "2",
+		"password": "2"
+	}, {
+		"userName": "4",
+		"password": "4"
+	}
+	, {
+		"userName": "25",
+		"password": "25"
+	}]
+}, {
+	"Enfermera": [{
+		"userName": "3",
+		"password": "3"
+	}, {
+		"userName": "27",
+		"password": "27"
+	}
+	, {
+		"userName": "37",
+		"password": "37"
+	}]
+}, {
+	"Residentes": [{
+		"userName": "15",
+		"password": "15"
+	}]
+}, {
+	"Residente": [{
+		"userName": "26",
+		"password": "26"
+	}, {
+		"userName": "36",
+		"password": "36"
+	}]
+}, {
+	"LoginError": [{
+		"userName": "2",
+		"password": "0"
+	}]
+}]

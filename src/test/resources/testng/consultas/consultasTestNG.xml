@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="ConsultasSuite" parallel="false">
+
+	<test name="consultas">
+		<groups>
+		    <run>
+		      <include name="grupo.consultas.filtro"/>
+		    </run>
+  		</groups>
+		<classes>
+			<class name="es.ofca.test.jimena4.functional.consultas.Consultas" />
+		</classes>
+	</test> <!-- Consultas -->
+</suite> <!-- ConsultasSuite -->

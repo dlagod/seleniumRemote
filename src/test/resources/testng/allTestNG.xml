@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="AllSuite" parallel="false">
+	
+	<test name="all">
+		<groups>
+			<define name="grupo.login">
+		      <include name="grupo.login.error"/>
+		      <include name="grupo.login.ok"/>
+		    </define>
+		
+		    <run>
+		      <include name="grupo.login"/>
+		      <include name="grupo.busqueda.filtro"/>
+		      <include name="grupo.consultas.filtro"/>
+		      <include name="grupo.urgencias.filtro"/>
+		    </run>
+  		</groups>
+		<classes>
+			<class name="es.ofca.test.jimena4.functional.login.Login" />
+			<class name="es.ofca.test.jimena4.functional.busquedapacientes.Busqueda" />
+			<class name="es.ofca.test.jimena4.functional.consultas.Consultas" />
+			<class name="es.ofca.test.jimena4.functional.urgencias.ListadoPacientes" />
+		</classes>
+	</test> <!-- TODOS los Test -->
+</suite> <!-- AllSuite -->

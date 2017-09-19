@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="UrgenciasSuite" parallel="false">
+	
+	<test name="urgencias">
+		<groups>
+		    <run>
+		      <include name="grupo.urgencias.filtro"/>
+		    </run>
+  		</groups>
+		<classes>
+			<class name="es.ofca.test.jimena4.functional.urgencias.ListadoPacientes" />
+		</classes>
+	</test> <!-- Urgencias -->
+</suite> <!-- UrgenciasSuite -->
