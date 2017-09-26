@@ -12,22 +12,22 @@ import org.testng.annotations.Test;
 import es.ofca.test.jimena4.common.beans.UserData;
 import es.ofca.test.jimena4.common.beans.UsersData;
 import es.ofca.test.jimena4.common.beans.UsersData.Roles;
-import es.ofca.test.jimena4.common.selenium.WebDriverSelenium;
 import es.ofca.test.jimena4.common.utils.DataProviderUtils;
 import es.ofca.test.jimena4.common.utils.PropertiesFile;
+import es.ofca.test.jimena4.functional.GeneralForm;
+import es.ofca.test.jimena4.functional.constant.FunctionalConstants;
 
 /**
  * Clase que permite realizar las pruebas funcionales de Consultas.
  * 
  * @author jluis
  */
-public class Consultas extends WebDriverSelenium{
+public class Consultas extends GeneralForm {
 	private static final Logger LOGGER = Logger.getLogger(Consultas.class.getName());
 	
 	private static final String MESSAGE_AGENDA_NULL = "consultas.agendaNull";
 	private static final String DIA_SEL = "consultas.diaSel";
 	private static final String SERVICE_SEL = "consultas.serviceSel";
-	private static final String CONSULTAS = "consultas.moduleName";
 
 	/**
 	 * JIMEIV-2444: Acceso Consultas	
@@ -58,7 +58,7 @@ public class Consultas extends WebDriverSelenium{
 		}
 		
 		By locator = By.xpath("//*[local-name()='a'][div/div/h3/text() [contains(.,'"
-				+ PropertiesFile.getValue(CONSULTAS) + "')]]");
+				+ PropertiesFile.getValue(FunctionalConstants.CONSULTAS) + "')]]");
 		untilClickElement(locator);
 	
 		AssertJUnit.assertEquals(PropertiesFile.getValue(MESSAGE_AGENDA_NULL),
@@ -73,7 +73,7 @@ public class Consultas extends WebDriverSelenium{
 		Map<String, List<UserData>> mapUsers = UsersData.getMapUsers();
 		
 		String[] roles =  new String[]{Roles.FACULTATIVO.getValue()};
-		Object[][] result = DataProviderUtils.createObjectMultiArray(mapUsers, 2, roles);
+		Object[][] result = DataProviderUtils.createObjectMultiArray(mapUsers, 1, roles);
 		
 		return result;
 	}

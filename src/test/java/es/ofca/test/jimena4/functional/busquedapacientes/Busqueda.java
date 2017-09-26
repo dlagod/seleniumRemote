@@ -12,19 +12,19 @@ import org.testng.annotations.Test;
 import es.ofca.test.jimena4.common.beans.UserData;
 import es.ofca.test.jimena4.common.beans.UsersData;
 import es.ofca.test.jimena4.common.beans.UsersData.Roles;
-import es.ofca.test.jimena4.common.selenium.WebDriverSelenium;
 import es.ofca.test.jimena4.common.utils.DataProviderUtils;
 import es.ofca.test.jimena4.common.utils.PropertiesFile;
+import es.ofca.test.jimena4.functional.GeneralForm;
+import es.ofca.test.jimena4.functional.constant.FunctionalConstants;
 
 /**
  * Clase que permite realizar las pruebas funcionales de Busqueda de Pacientes.
  * 
  * @author jluis
  */
-public class Busqueda extends WebDriverSelenium{
+public class Busqueda extends GeneralForm {
 	private static final Logger LOGGER = Logger.getLogger(Busqueda.class.getName());
 	
-	private static String PATIENTS_NAME = "patients.moduleName";
 	private static String PATIENTS_BTN_VIEW_PATIENS = "patients.btnViewPantient";
 
 	/**
@@ -77,7 +77,7 @@ public class Busqueda extends WebDriverSelenium{
 		}
 		
 		By locator = By.xpath("//*[local-name()='a'][div/div/h3/text() [contains(.,'"
-				+ PropertiesFile.getValue(PATIENTS_NAME) + "')]]");
+				+ PropertiesFile.getValue(FunctionalConstants.PATIENTS) + "')]]");
 		untilClickElement(locator);
 		
 		By name = By.id("formFiltroPacientes:nombre");
@@ -141,7 +141,7 @@ public class Busqueda extends WebDriverSelenium{
 		Map<String, List<UserData>> mapUsers = UsersData.getMapUsers();
 		
 		String[] roles =  new String[]{Roles.FACULTATIVO.getValue()};
-		Object[][] result = DataProviderUtils.createObjectMultiArray(mapUsers, 2, roles);
+		Object[][] result = DataProviderUtils.createObjectMultiArray(mapUsers, 1, roles);
 		
 		return result;
 	}

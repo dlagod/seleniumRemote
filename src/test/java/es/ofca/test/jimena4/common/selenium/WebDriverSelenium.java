@@ -26,7 +26,6 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.AssertJUnit;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 
@@ -116,6 +115,7 @@ public class WebDriverSelenium {
 	}
 	
 	
+	
 	/**
 	 * Método que cambia el focus
 	 * @throws Exception
@@ -126,13 +126,27 @@ public class WebDriverSelenium {
 			LOGGER.info("WebDriverSelenium.focus");
 		}
 		
-		// Se cambia el foco del campo
-		getDriver().findElement(By.cssSelector("body")).sendKeys(Keys.CONTROL + "\t");
-
-		// Espera de recarga de página
-		getDriver().manage().timeouts().pageLoadTimeout(Constants.TIME_OUT_SECONDS, TimeUnit.SECONDS);
+		//focus
+		focus(getDriver());
 	}
 	
+	/**
+	 * Método que cambia el focus
+	 * @param driverArgument Se le pasa por Argumento el Driver
+	 * @throws Exception
+	 *             Excepción producida
+	 */
+	public static void focus(WebDriver driverArgument) throws Exception {
+		if (LOGGER.isInfoEnabled()) {
+			LOGGER.info("WebDriverSelenium.focus");
+		}
+		
+		// Se cambia el foco del campo
+		driverArgument.findElement(By.cssSelector("body")).sendKeys(Keys.CONTROL + "\t");
+
+		// Espera de recarga de página
+		driverArgument.manage().timeouts().pageLoadTimeout(Constants.TIME_OUT_SECONDS, TimeUnit.SECONDS);
+	}
 	
 	
 	/**
@@ -144,7 +158,21 @@ public class WebDriverSelenium {
 	public WebElement untilFindElement(final By locator)
 			throws Exception {
 		
-	    FluentWait<WebDriver> wait = new FluentWait<WebDriver>(getDriver())
+	   return untilFindElement(getDriver(), locator);
+	}
+	
+	
+	/**
+	 * Función que espera hasta encontrar el elemento
+	 * @param driverArgument Web Driver
+	 * @param locator Identificador del elemento
+	 * @return WebElement
+	 * @throws Exception Excepción producida
+	 */
+	public static WebElement untilFindElement(WebDriver driverArgument, final By locator)
+			throws Exception {
+		
+	    FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driverArgument)
 	            .withTimeout(Constants.TIME_OUT_SECONDS, TimeUnit.SECONDS)
 	            .pollingEvery(500, TimeUnit.MILLISECONDS)
 	            .ignoring(NoSuchElementException.class);
@@ -155,11 +183,10 @@ public class WebDriverSelenium {
 				if (LOGGER.isInfoEnabled()) {
 					LOGGER.info("WebDriverSelenium.untilFindElement");
 				}
-		        return getDriver().findElement(locator);
+		        return webDriver.findElement(locator);
 		    }
 		});
 	}
-	
 	
 	/**
 	 * Función que espera hasta encontrar los elementos
@@ -170,7 +197,20 @@ public class WebDriverSelenium {
 	public List<WebElement> untilFindElements(final By locator)
 			throws Exception {
 		
-	    FluentWait<WebDriver> wait = new FluentWait<WebDriver>(getDriver())
+	   return untilFindElements(getDriver(), locator);
+	}
+	
+	/**
+	 * Función que espera hasta encontrar los elementos
+	 * @param driverArgument Web Driver
+	 * @param locator Identificador de los elementos
+	 * @return Lista de elementos
+	 * @throws Exception Excepción producida
+	 */
+	public static List<WebElement> untilFindElements(WebDriver driverArgument, final By locator)
+			throws Exception {
+		
+	    FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driverArgument)
 	            .withTimeout(Constants.TIME_OUT_SECONDS, TimeUnit.SECONDS)
 	            .pollingEvery(500, TimeUnit.MILLISECONDS)
 	            .ignoring(NoSuchElementException.class);
@@ -181,7 +221,7 @@ public class WebDriverSelenium {
 				if (LOGGER.isInfoEnabled()) {
 					LOGGER.info("WebDriverSelenium.untilFindElements");
 				}
-				List<WebElement> elements = getDriver().findElements(locator);
+				List<WebElement> elements = webDriver.findElements(locator);
 				if ((elements == null) || (elements.isEmpty())) {
 					throw new NoSuchElementException("Elementos no encontrados");
 		    	} 
@@ -199,7 +239,21 @@ public class WebDriverSelenium {
 	 */
 	public boolean untilClearElement(final By locator)
 			throws Exception {
-	    FluentWait<WebDriver> wait = new FluentWait<WebDriver>(getDriver())
+	    
+		return untilClearElement(getDriver(), locator);
+	}
+	
+	
+	/**
+	 * Función que espera hasta limpiar el elemento
+	 * @param driverArgument Web Driver
+	 * @param locator Identificador del elemento
+	 * @return Booleano que indica si se ha realizado la acción o no
+	 * @throws Exception Excepción producida
+	 */
+	public static boolean untilClearElement(WebDriver driverArgument, final By locator)
+			throws Exception {
+	    FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driverArgument)
 	            .withTimeout(Constants.TIME_OUT_SECONDS, TimeUnit.SECONDS)
 	            .pollingEvery(500, TimeUnit.MILLISECONDS)
 	            .ignoring(NoSuchElementException.class)
@@ -213,7 +267,7 @@ public class WebDriverSelenium {
 				}
 				
 		    	Boolean make = false;
-		    	WebElement webElement = ((WebElement) getDriver().findElement(locator));
+		    	WebElement webElement = ((WebElement) webDriver.findElement(locator));
 		    	if (webElement.isDisplayed()) {
 		    		webElement.clear();
 		    		make = true;
@@ -235,7 +289,21 @@ public class WebDriverSelenium {
 	public boolean untilSendKeysElement(final By locator, final String value)
 			throws Exception {
 		
-	    FluentWait<WebDriver> wait = new FluentWait<WebDriver>(getDriver())
+	  return untilSendKeysElement(getDriver(), locator, value);
+	}	
+	
+	/**
+	 * Función que espera hasta establecer el valor del elemento
+	 * @param driverArgument Web Driver
+	 * @param locator Identificador del elemento
+	 * @param value Valor del elemento
+	 * @return Booleano que indica si se ha realizado la acción o no
+	 * @throws Exception Excepción producida
+	 */
+	public static boolean untilSendKeysElement(WebDriver driverArgument, final By locator, final String value)
+			throws Exception {
+		
+	    FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driverArgument)
 	            .withTimeout(Constants.TIME_OUT_SECONDS, TimeUnit.SECONDS)
 	            .pollingEvery(500, TimeUnit.MILLISECONDS)
 	            .ignoring(NoSuchElementException.class)
@@ -249,7 +317,7 @@ public class WebDriverSelenium {
 				}
 		
 		    	Boolean make = false;
-		    	WebElement element = ((WebElement) getDriver().findElement(locator));
+		    	WebElement element = ((WebElement) webDriver.findElement(locator));
 		    	element.sendKeys(value);
 		    	if ((value != null) && (value.equalsIgnoreCase(element.getAttribute(Constants.VALUE)))) {
 		    		make = true;
@@ -260,7 +328,7 @@ public class WebDriverSelenium {
 		    	return make;
 		    }
 		});
-	}	
+	}
 	
 	/**
 	 * Función que espera devolver el valor del atributo
@@ -272,7 +340,23 @@ public class WebDriverSelenium {
 	public String untilGetAttributeElement(final By locator, final String name)
 			throws Exception {
 		
-	    FluentWait<WebDriver> wait = new FluentWait<WebDriver>(getDriver())
+	   return untilGetAttributeElement(getDriver(), locator, name);
+	}
+	
+	
+	
+	/**
+	 * Función que espera devolver el valor del atributo
+	 * @param driverArgument Web Driver
+	 * @param locator Identificador del elemento
+	 * @param name Nombre del atributo
+	 * @return Valor devuelto.
+	 * @throws Exception Excepción producida
+	 */
+	public static String untilGetAttributeElement(WebDriver driverArgument, final By locator, final String name)
+			throws Exception {
+		
+	    FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driverArgument)
 	            .withTimeout(Constants.TIME_OUT_SECONDS, TimeUnit.SECONDS)
 	            .pollingEvery(500, TimeUnit.MILLISECONDS)
 	            .ignoring(NoSuchElementException.class)
@@ -283,7 +367,7 @@ public class WebDriverSelenium {
 				if (LOGGER.isInfoEnabled()) {
 					LOGGER.info("WebDriverSelenium.untilGetAttributeElement");
 				}
-		    	return ((WebElement) getDriver().findElement(locator)).getAttribute(name);
+		    	return ((WebElement) webDriver.findElement(locator)).getAttribute(name);
 		    }
 		});
 	}
@@ -299,7 +383,23 @@ public class WebDriverSelenium {
 	public String untilGetAttributeElement(final By locator, final String name, final String value)
 			throws Exception {
 		
-	    FluentWait<WebDriver> wait = new FluentWait<WebDriver>(getDriver())
+		return untilGetAttributeElement(getDriver(), locator, name, value);
+	}
+	
+	
+	/**
+	 * Función que espera devolver el valor del atributo
+	 * @param driverArgument Web Drijver
+	 * @param locator Identificador del elemento
+	 * @param name Nombre del atributo
+	 * @param value Valor del atributo 
+	 * @return Valor devuelto.
+	 * @throws Exception Excepción producida
+	 */
+	public static String untilGetAttributeElement(WebDriver driverArgument, final By locator, final String name, final String value)
+			throws Exception {
+		
+	    FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driverArgument)
 	            .withTimeout(Constants.TIME_OUT_SECONDS, TimeUnit.SECONDS)
 	            .pollingEvery(500, TimeUnit.MILLISECONDS)
 	            .ignoring(NoSuchElementException.class)
@@ -310,7 +410,7 @@ public class WebDriverSelenium {
 				if (LOGGER.isInfoEnabled()) {
 					LOGGER.info("WebDriverSelenium.untilGetAttributeElement");
 				}
-				WebElement element = ((WebElement) getDriver().findElement(locator));
+				WebElement element = ((WebElement) webDriver.findElement(locator));
 				if ((value != null) && (!value.equalsIgnoreCase(element.getAttribute(name)))) {
 					throw new NoSuchElementException("Valor no establecido");
 		    	}
@@ -318,7 +418,6 @@ public class WebDriverSelenium {
 		    }
 		});
 	}
-	
 	
 	/**
 	 * Función que espera devolver el valor del texto
@@ -329,7 +428,20 @@ public class WebDriverSelenium {
 	public String untilGetTextElement(final By locator)
 			throws Exception {
 		
-		FluentWait<WebDriver> wait = new FluentWait<WebDriver>(getDriver())
+		return untilGetTextElement(getDriver(), locator);
+	}
+	
+	/**
+	 * Función que espera devolver el valor del texto
+	 * @param driverArgument Web Driver 
+	 * @param locator Identificador del elemento
+	 * @return Valor devuelto.
+	 * @throws Exception Excepción producida
+	 */
+	public static String untilGetTextElement(WebDriver driverArgument, final By locator)
+			throws Exception {
+		
+		FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driverArgument)
 				.withTimeout(Constants.TIME_OUT_SECONDS, TimeUnit.SECONDS).pollingEvery(500, TimeUnit.MILLISECONDS)
 				.ignoring(NoSuchElementException.class).ignoring(StaleElementReferenceException.class);
 
@@ -338,7 +450,7 @@ public class WebDriverSelenium {
 				if (LOGGER.isInfoEnabled()) {
 					LOGGER.info("WebDriverSelenium.untilGetTextElement");
 				}
-				return ((WebElement) getDriver().findElement(locator)).getText();
+				return ((WebElement) webDriver.findElement(locator)).getText();
 			}
 		});
 	}
@@ -354,7 +466,23 @@ public class WebDriverSelenium {
 	public String untilGetTextElement(final By locator, final String value)
 			throws Exception {
 		
-		FluentWait<WebDriver> wait = new FluentWait<WebDriver>(getDriver())
+		return untilGetTextElement(getDriver(), locator, value);
+	}
+	
+	
+	
+	/**
+	 * Función que espera devolver el valor del texto
+	 * @param driverArgument Web Driver
+	 * @param locator Identificador del elemento
+	 * @param value Valor del atributo 
+	 * @return Valor devuelto.
+	 * @throws Exception Excepción producida
+	 */
+	public static String untilGetTextElement(WebDriver driverArgument, final By locator, final String value)
+			throws Exception {
+		
+		FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driverArgument)
 				.withTimeout(Constants.TIME_OUT_SECONDS, TimeUnit.SECONDS).pollingEvery(500, TimeUnit.MILLISECONDS)
 				.ignoring(NoSuchElementException.class).ignoring(StaleElementReferenceException.class);
 
@@ -363,7 +491,7 @@ public class WebDriverSelenium {
 				if (LOGGER.isInfoEnabled()) {
 					LOGGER.info("WebDriverSelenium.untilGetTextElement");
 				}
-				WebElement element = ((WebElement) getDriver().findElement(locator));
+				WebElement element = ((WebElement) webDriver.findElement(locator));
 				if ((value != null) && (!value.equalsIgnoreCase(element.getText()))) {
 					throw new NoSuchElementException("Valor no establecido");
 		    	}
@@ -371,7 +499,6 @@ public class WebDriverSelenium {
 			}
 		});
 	}
-	
 	
 	
 	/**
@@ -383,7 +510,21 @@ public class WebDriverSelenium {
 	public boolean untilClickElement(final By locator)
 			throws Exception {
 		
-	    FluentWait<WebDriver> wait = new FluentWait<WebDriver>(getDriver())
+	   return untilClickElement(getDriver(), locator);
+	}
+	
+	
+	/**
+	 * Función que espera hasta pulsar click en el elemento
+	 * @param driverArgument Web Driver
+	 * @param locator Identificador del elemento
+	 * @return Booleano que indica si se ha realizado la acción o no
+	 * @throws Exception Excepción producida
+	 */
+	public static boolean untilClickElement(WebDriver driverArgument, final By locator)
+			throws Exception {
+		
+	    FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driverArgument)
 	            .withTimeout(Constants.TIME_OUT_SECONDS, TimeUnit.SECONDS)
 	            .pollingEvery(500, TimeUnit.MILLISECONDS)
 	            .ignoring(NoSuchElementException.class)
@@ -396,7 +537,7 @@ public class WebDriverSelenium {
 					LOGGER.info("WebDriverSelenium.untilClickElement");
 				}
 		    	Boolean make = false;
-		    	((WebElement) getDriver().findElement(locator)).click();
+		    	((WebElement) webDriver.findElement(locator)).click();
 		    	make = true;
 		    	return make;
 		    }
@@ -414,7 +555,22 @@ public class WebDriverSelenium {
 	public boolean untilSelectElement(final By locator, final String value)
 			throws Exception {
 		
-	    FluentWait<WebDriver> wait = new FluentWait<WebDriver>(getDriver())
+	   return untilSelectElement(getDriver(), locator, value);
+	}
+	
+	
+	/**
+	 * Función que espera hasta pulsar seleccionar un el elemento de una lista
+	 * @param driverArgument Web Driver
+	 * @param locator Identificador del elemento
+	 * @param value Valor del elemento en la lista
+	 * @return Booleano que indica si se ha realizado la acción o no
+	 * @throws Exception Excepción producida
+	 */
+	public static boolean untilSelectElement(WebDriver driverArgument, final By locator, final String value)
+			throws Exception {
+		
+	    FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driverArgument)
 	            .withTimeout(Constants.TIME_OUT_SECONDS, TimeUnit.SECONDS)
 	            .pollingEvery(500, TimeUnit.MILLISECONDS)
 	            .ignoring(NoSuchElementException.class)
@@ -429,7 +585,7 @@ public class WebDriverSelenium {
 			
 		    	Boolean make = false;
 				// Se comprueba los mensajes de campos obligatorios
-				List<WebElement> listValuesSelect = getDriver().findElements(locator);
+				List<WebElement> listValuesSelect = webDriver.findElements(locator);
 				
 				if ((listValuesSelect != null) && (!listValuesSelect.isEmpty())) {
 					for (WebElement select : listValuesSelect) {
@@ -455,7 +611,20 @@ public class WebDriverSelenium {
 	public boolean untilSelectTextElement(final By locator, final String text)
 			throws Exception {
 		
-	    FluentWait<WebDriver> wait = new FluentWait<WebDriver>(getDriver())
+	   return untilSelectTextElement(getDriver(), locator, text);
+	}
+	
+	/**
+	 * Función que espera hasta pulsar click en el elemento
+	 * @param driverArgument Web Driver
+	 * @param locator Identificador del elemento
+	 * @return Booleano que indica si se ha realizado la acción o no
+	 * @throws Exception Excepción producida
+	 */
+	public static boolean untilSelectTextElement(WebDriver driverArgument, final By locator, final String text)
+			throws Exception {
+		
+	    FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driverArgument)
 	            .withTimeout(Constants.TIME_OUT_SECONDS, TimeUnit.SECONDS)
 	            .pollingEvery(500, TimeUnit.MILLISECONDS)
 	            .ignoring(NoSuchElementException.class)
@@ -468,7 +637,7 @@ public class WebDriverSelenium {
 					LOGGER.info("WebDriverSelenium.untilClickElement");
 				}
 		    	Boolean make = false;
-		    	Select select = new Select(getDriver().findElement(locator));
+		    	Select select = new Select(webDriver.findElement(locator));
 		    	select.selectByVisibleText(text);
 		    	make = true;
 		    	return make;
@@ -487,32 +656,45 @@ public class WebDriverSelenium {
 	public boolean untilClickCheck(final By locatorClick, final By locatorCheck)
 			throws Exception {
 		
+    	return untilClickCheck(getDriver(), locatorClick, locatorCheck);
+	}
+
+	/**
+	 * Función que espera hasta pulsar click en un Check
+	 * @param driverArgument Web Driver
+	 * @param locatorClick Identificador del elemento para realizar el click
+	 * @param locatorCheck Identificador del elemento para verificar el check
+	 * @return Booleano que indica si se ha realizado la acción o no
+	 * @throws Exception Excepción producida
+	 */
+	public static boolean untilClickCheck(WebDriver driverArgument, final By locatorClick, final By locatorCheck)
+			throws Exception {
+		
 		if (LOGGER.isInfoEnabled()) {
 			LOGGER.info("WebDriverSelenium.untilClickCheck");
 		}
 		
 		// Se comprueba el elemento
-		Boolean oldChecked = Boolean.parseBoolean(((WebElement) untilFindElement(locatorCheck)).getAttribute(Constants.ARIA_CHECKED));
+		Boolean oldChecked = Boolean.parseBoolean(((WebElement) untilFindElement(driverArgument, locatorCheck)).getAttribute(Constants.ARIA_CHECKED));
    	
     	// Se realiza el click
-		clickWhenReady(locatorClick);
+		clickWhenReady(driverArgument, locatorClick);
     	
     	//Se comprueba cada 500 millis
-    	WebDriverWait wait = new WebDriverWait(getDriver(), Constants.TIME_OUT_SECONDS, 500);
+    	WebDriverWait wait = new WebDriverWait(driverArgument, Constants.TIME_OUT_SECONDS, 500);
     	Boolean updated = wait.until(textToBePresentInElementAttribute(locatorCheck, String.valueOf(!oldChecked), Constants.ARIA_CHECKED));
     	
     	//Se vuelve comprobar que se ha modificado el elemento
     	Boolean checked = oldChecked;
     	if (updated) {
-    		checked = Boolean.parseBoolean(((WebElement) untilFindElement(locatorCheck)).getAttribute(Constants.ARIA_CHECKED));
+    		checked = Boolean.parseBoolean(((WebElement) untilFindElement(driverArgument, locatorCheck)).getAttribute(Constants.ARIA_CHECKED));
     	}
     	
     	//Se espera al cambio del check
     	return checked;
 	}
+	
 
-	
-	
 	
 	/**
 	 * Método que indica cuando un elemento se puede pinchar
@@ -520,6 +702,18 @@ public class WebDriverSelenium {
 	 * @return True, si se puede pinchar en él.
 	 */
 	public boolean retryingFindClick(By by) {
+		
+		return retryingFindClick(getDriver(), by);
+	}
+	
+	
+	/**
+	 * Método que indica cuando un elemento se puede pinchar
+	 * @param driverArgument Web Driver
+	 * @param by Localizador del elemento
+	 * @return True, si se puede pinchar en él.
+	 */
+	public static boolean retryingFindClick(WebDriver driverArgument, By by) {
 		if (LOGGER.isInfoEnabled()) {
 			LOGGER.info("WebDriverSelenium.retryingFindClick");
 		}
@@ -528,7 +722,7 @@ public class WebDriverSelenium {
 		int attempts = 0;
 		while (attempts < Constants.RETRY) {
 			try {
-				getDriver().findElement(by).click();
+				driverArgument.findElement(by).click();
 				result = true;
 				break;
 			} catch (StaleElementReferenceException e) {
@@ -539,13 +733,23 @@ public class WebDriverSelenium {
 		return result;
 	}
 	
-	
 	/**
 	 * Método que indica cuando un elemento se puede borrar
 	 * @param by Localizador del elemento
 	 * @return True, si se puede pinchar en él.
 	 */
 	public boolean retryingFindClear(By by) {
+		
+		return retryingFindClear(getDriver(), by);
+	}
+	
+	/**
+	 * Método que indica cuando un elemento se puede borrar
+	 * @param driverArgument Web Driver
+	 * @param by Localizador del elemento
+	 * @return True, si se puede pinchar en él.
+	 */
+	public static boolean retryingFindClear(WebDriver driverArgument, By by) {
 		if (LOGGER.isInfoEnabled()) {
 			LOGGER.info("WebDriverSelenium.retryingFindClear");
 		}
@@ -553,7 +757,7 @@ public class WebDriverSelenium {
 		int attempts = 0;
 		while (attempts < Constants.RETRY) {
 			try {
-				getDriver().findElement(by).clear();
+				driverArgument.findElement(by).clear();
 				result = true;
 				break;
 			} catch (StaleElementReferenceException e) {
@@ -569,11 +773,20 @@ public class WebDriverSelenium {
 	 * @throws InterruptedException Excepción interrunpida
 	 */
 	public void waitForAjax() throws InterruptedException {
+		waitForAjax(getDriver());
+	}
+	
+	/**
+	 * Función que espera por la llamada de un AJax
+	 * @param driverArgument Web Driver
+	 * @throws InterruptedException Excepción interrunpida
+	 */
+	public static void waitForAjax(WebDriver driverArgument) throws InterruptedException {
 		if (LOGGER.isInfoEnabled()) {
 			LOGGER.info("WebDriverSelenium.waitForAjax");
 		}
 		while (true) {
-			Boolean ajaxIsComplete = (Boolean) ((JavascriptExecutor) getDriver()).executeScript("return jQuery.active == 0");
+			Boolean ajaxIsComplete = (Boolean) ((JavascriptExecutor) driverArgument).executeScript("return jQuery.active == 0");
 			if (ajaxIsComplete) {
 				break;
 			}
@@ -585,10 +798,19 @@ public class WebDriverSelenium {
 	 * Método que espera a que la página este totalmente cargada
 	 */
 	public void waitUntilDocumentIsReady() {
+		waitUntilDocumentIsReady(getDriver());
+	}
+	
+	
+	/**
+	 * Método que espera a que la página este totalmente cargada
+	 * @param driverArgument Web Driver
+	 */
+	public static void waitUntilDocumentIsReady(WebDriver driverArgument) {
 		if (LOGGER.isInfoEnabled()) {
 			LOGGER.info("WebDriverSelenium.waitUntilDocumentIsReady");
 		}
-		Wait<WebDriver> wait = new FluentWait<>(getDriver()).withTimeout(Constants.TIME_OUT_SECONDS, TimeUnit.SECONDS)
+		Wait<WebDriver> wait = new FluentWait<>(driverArgument).withTimeout(Constants.TIME_OUT_SECONDS, TimeUnit.SECONDS)
 				.pollingEvery(1, TimeUnit.SECONDS).ignoring(UnhandledAlertException.class);
 
 		wait.until(new Function<WebDriver, Boolean>() {
@@ -605,11 +827,22 @@ public class WebDriverSelenium {
 	 * @return Elemento
 	 */
 	public WebElement getWhenVisible(By locator) {
+		
+		return getWhenVisible(getDriver(), locator);
+	}
+	
+	/**
+	 * Método que espera hasta que el elemento este visible
+	 * @param driverArgument Web Driver
+	 * @param locator Localizador
+	 * @return Elemento
+	 */
+	public static WebElement getWhenVisible(WebDriver driverArgument, By locator) {
 		if (LOGGER.isInfoEnabled()) {
 			LOGGER.info("WebDriverSelenium.getWhenVisible");
 		}
 		WebElement element = null;
-		WebDriverWait wait = new WebDriverWait(getDriver(), Constants.TIME_OUT_SECONDS);
+		WebDriverWait wait = new WebDriverWait(driverArgument, Constants.TIME_OUT_SECONDS);
 		element = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
 		return element;
 	}
@@ -620,11 +853,21 @@ public class WebDriverSelenium {
 	 * @param locator Localizador del elemento
 	 */
 	public void clickWhenReady(By locator) {
+		clickWhenReady(getDriver(), locator);
+	}
+	
+	
+	/**
+	 * Se espera hasta que el elemento se pueda pinchar en él.
+	 * @param driverArgument Web Driver
+	 * @param locator Localizador del elemento
+	 */
+	public static void clickWhenReady(WebDriver driverArgument, By locator) {
 		if (LOGGER.isInfoEnabled()) {
 			LOGGER.info("WebDriverSelenium.clickWhenReady");
 		}
 		WebElement element = null;
-		WebDriverWait wait = new WebDriverWait(getDriver(), Constants.TIME_OUT_SECONDS);
+		WebDriverWait wait = new WebDriverWait(driverArgument, Constants.TIME_OUT_SECONDS);
 		element = wait.until(ExpectedConditions.elementToBeClickable(locator));
 		element.click();
 	}
@@ -672,13 +915,24 @@ public class WebDriverSelenium {
 	   * @throws Exception Excepción producida
 	   */
 	  protected boolean isBrowserIE() throws Exception {
+			
+			return isBrowserIE(getDriver());
+	  }
+	  
+	  /**
+	   * Permite conocer si el navegador es Internet Explorer
+	   * @param driverArgument Web Driver
+	   * @return True si es, False si no es.
+	   * @throws Exception Excepción producida
+	   */
+	  protected static boolean isBrowserIE(WebDriver driverArgument) throws Exception {
 			if (LOGGER.isInfoEnabled()) {
 				LOGGER.info("WebDriverSelenium.isBrowserIE");
 			}
 			
 			boolean isIE = false;
 			
-			Capabilities cap = ((RemoteWebDriver) getDriver()).getCapabilities();
+			Capabilities cap = ((RemoteWebDriver) driverArgument).getCapabilities();
 		    String browserName = cap.getBrowserName().toLowerCase();
 		    
 		    if (Browser.IE.getValue().equals(browserName)) {
@@ -687,61 +941,4 @@ public class WebDriverSelenium {
 			
 			return isIE;
 	  }
-
-	public void login(String userName, String password)
-			throws Exception {
-
-		if (LOGGER.isInfoEnabled()) {
-			LOGGER.info("WebDriverSelenium.login - JIMEIV-718");
-		}
-
-		loginPage(userName, password);
-
-		AssertJUnit.assertEquals(PropertiesFile.getValue(MESSAGE_lOGIN),
-				untilGetTextElement(By.cssSelector("div.lado_derecho > div.h2")));
-	}
-	
-	protected void loginPage(String userName, String password) 
-			throws Exception {
-		loginFormPage(userName,password);
-		getDriver().findElement(By.name("submit")).click();
-	}
-	
-	protected void loginFormPage(String userName, String password) 
-			throws Exception {
-		getDriver().get(ConfigFile.getValue(Constants.BASE_URL));
-		
-		// Completamos el usuario
-		By user = By.id("username");
-		untilClearElement(user);
-		untilSendKeysElement(user, userName);
-		
-		//Completamos la password
-		By pass = By.id("password");
-		untilClearElement(pass);
-		untilSendKeysElement(pass, password);
-	}
-	
-	
-	
-	/**
-	 * JIMEIV-720: Cierre de sesión
-	 */
-	protected void cerrarSesion() throws Exception {
-		if (LOGGER.isInfoEnabled()) {
-			LOGGER.info("WebDriverSelenium.cerrarSesion - JIMEIV-720");
-		}
-		//waitForLayout();
-		
-		By cerrar = By.cssSelector("img[title=\"" + PropertiesFile.getValue(BTN_CLOSE) + "\"]");
-		clickWhenReady(cerrar);
-		//untilClickElement(cerrar);
-	}
-	
-	protected void waitForLayout() throws Exception {
-		//Esperar hasta ocultar Capa Popup modal
-		By capa = By.xpath("//*[local-name()='div'] [contains(@id,'_modal') and (not(contains(@id,'formModalPanels:'))) and (contains(@class,'ui-widget-overlay'))]");
-		WebDriverWait wait = new WebDriverWait(getDriver(), Constants.TIME_OUT_SECONDS);
-		wait.until(ExpectedConditions.invisibilityOfElementLocated(capa));
-	}
 }

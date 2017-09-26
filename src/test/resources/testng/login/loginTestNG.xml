@@ -11,6 +11,8 @@
   		</groups>
 		<classes>
 			<class name="es.ofca.test.jimena4.functional.login.Login" />
+			<class name="es.ofca.test.jimena4.functional.login.SessionClose" />
+			<class name="es.ofca.test.jimena4.functional.login.ReleaseNotes" />
 		</classes>
 	</test> <!-- Login -->
 </suite> <!-- LoginSuite -->

@@ -2,14 +2,18 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="BusquedaSuite" parallel="false">
 	
-	<test name="busqueda">
+	<!-- http://xamp.sacyl.es/jira/browse/JIMEIV-1618 -->
+	<test name="busquedaPacientes">
 		<groups>
 		    <run>
 		      <include name="grupo.busqueda.filtro"/>
 		    </run>
   		</groups>
 		<classes>
-			<class name="es.ofca.test.jimena4.functional.busquedapacientes.Busqueda" />
+			<!-- <class name="es.ofca.test.jimena4.functional.busquedapacientes.Busqueda" />
+			<class name="es.ofca.test.jimena4.functional.busquedapacientes.AccesoBusqueda" /> 
+			<class name="es.ofca.test.jimena4.functional.busquedapacientes.BusquedaPacientesNHC" />-->
+			<class name="es.ofca.test.jimena4.functional.busquedapacientes.BusquedaPacientesNom" />
 		</classes>
 	</test> <!-- Busqueda -->
 </suite> <!-- BusquedaSuite -->

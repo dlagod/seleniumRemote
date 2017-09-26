@@ -12,20 +12,20 @@ import org.testng.annotations.Test;
 import es.ofca.test.jimena4.common.beans.UserData;
 import es.ofca.test.jimena4.common.beans.UsersData;
 import es.ofca.test.jimena4.common.beans.UsersData.Roles;
-import es.ofca.test.jimena4.common.selenium.WebDriverSelenium;
 import es.ofca.test.jimena4.common.utils.DataProviderUtils;
 import es.ofca.test.jimena4.common.utils.PropertiesFile;
+import es.ofca.test.jimena4.functional.GeneralForm;
+import es.ofca.test.jimena4.functional.constant.FunctionalConstants;
 
 /**
  * Clase que permite realizar las pruebas funcionales de urgencias.
  * 
  * @author jluis
  */
-public class ListadoPacientes extends WebDriverSelenium {
+public class ListadoPacientes extends GeneralForm {
 	
 	private static final Logger LOGGER = Logger.getLogger(ListadoPacientes.class.getName());
 	
-	private static final String URGENCY = "urgency.moduleName";
 	private static final String MEDICAL = "urgency.medical";
 		
 	/**
@@ -78,7 +78,7 @@ public class ListadoPacientes extends WebDriverSelenium {
 		}
 		
 		By urgency = By.xpath("//*[local-name()='a'][div/div/h3/text() [contains(.,'"
-				+ PropertiesFile.getValue(URGENCY) + "')]]");
+				+ PropertiesFile.getValue(FunctionalConstants.URGENCY) + "')]]");
 		untilClickElement(urgency);
 		
 		//Se espera por la capa de en Progreso
